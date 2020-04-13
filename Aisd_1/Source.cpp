@@ -1,7 +1,10 @@
 #include <iostream>
 #include <iomanip>
+#include <time.h>
+#include <chrono>
 
 using namespace std;
+using namespace chrono;
 
 //print array
 template <typename T>
@@ -213,16 +216,18 @@ struct n1n2
 {
 	double n1, n2;
 };
-n1n2 polarGenerator(double u1, double u2)
+n1n2 polarGenerator()
 {
 	n1n2 n;
+	double u1 = rand() / RAND_MAX;
+	double u2 = rand() / RAND_MAX;
 	double v1 = 2 * u1 - 1;
 	double v2 = 2 * u2 - 1;
 	double s = v1 * v1 + v2 * v2;
 	while (s >= 1)
 	{
-		cout << "write new u1 and u2" << endl;
-		cin >> u1 >> u2;
+		u1 = double(rand()) / RAND_MAX;
+		u2 = double(rand()) / RAND_MAX;
 		v1 = 2 * u1 - 1;
 		v2 = 2 * u2 - 1;
 		s = v1 * v1 + v2 * v2;
@@ -234,6 +239,9 @@ n1n2 polarGenerator(double u1, double u2)
 
 int main()
 {
+	srand(time(NULL));
+	time_point<system_clock> start, end;
+
 	//--sorts--
 
 	int arr1[3] = { 6, 9, 12 }, arr2[4] = { 3, 8, 10, 14 };
@@ -244,6 +252,36 @@ int main()
 	cout << "  arr2 + arr1:: ";  showArr(mergeSort(arr2, arr1, 4, 3), 3 + 4);
 	cout << "  arr1 (firsts 2 elems) + arr2 (firsts 2 elems):: ";  showArr(mergeSort(arr1, arr2, 2, 2), 2 + 2);
 
+	int arr211[1700], arr212[1700];
+	for (int i = 0; i < 1700; i++)
+	{
+		arr211[i] = i * i + i;
+		arr212[i] = i * i - i;
+	}
+	start = system_clock::now();
+	mergeSort(arr211, arr212, 1700, 1700);
+	end = system_clock::now();
+	cout << "-time (1700 elems): " << duration_cast<microseconds> (end - start).count() << " microseconds" << endl;
+	int arr221[2800], arr222[2800];
+	for (int i = 0; i < 2800; i++)
+	{
+		arr221[i] = i * i + i;
+		arr222[i] = i * i - i;
+	}
+	start = system_clock::now();
+	mergeSort(arr221, arr222, 2800, 2800);
+	end = system_clock::now();
+	cout << "-time (2800 elems): " << duration_cast<microseconds> (end - start).count() << " microseconds" << endl;
+	int arr231[7500], arr232[7500];
+	for (int i = 0; i < 7500; i++)
+	{
+		arr231[i] = i * i + i;
+		arr232[i] = i * i - i;
+	}
+	start = system_clock::now();
+	mergeSort(arr231, arr232, 7500, 7500);
+	end = system_clock::now();
+	cout << "-time (7500 elems): " << duration_cast<microseconds> (end - start).count() << " microseconds" << endl;
 
 	int arr3[5] = { 6,3,5,1,7};
 	int arr4[13] = { 1, 5, 6, 7, 2, 4, 3, 9, 8, 5, 4, 5, 6 };
@@ -253,6 +291,34 @@ int main()
 	cout << "  arr3: "; showArr(insertionSort(arr3, 5), 5);
 	cout << "  arr4: "; showArr(insertionSort(arr4, 13), 13);
 
+	int arr41[1000];
+	for (int i = 0; i < 1000; i++)
+	{
+		arr41[i] = rand()%1000;
+	}
+	start = system_clock::now();
+	insertionSort(arr41, 1000);
+	end = system_clock::now();
+	cout << "-time (1000 elems): " << duration_cast<microseconds> (end - start).count() << " microseconds" << endl;
+	int arr42[4000];
+	for (int i = 0; i < 4000; i++)
+	{
+		arr42[i] = rand() % 1000;
+	}
+	start = system_clock::now();
+	insertionSort(arr42, 4000);
+	end = system_clock::now();
+	cout << "-time (1000 elems): " << duration_cast<microseconds> (end - start).count() << " microseconds" << endl;	
+	int arr43[6000];
+	for (int i = 0; i < 6000; i++)
+	{
+		arr43[i] = rand() % 1000;
+	}
+	start = system_clock::now();
+	insertionSort(arr43, 6000);
+	end = system_clock::now();
+	cout << "-time (1000 elems): " << duration_cast<microseconds> (end - start).count() << " microseconds" << endl;
+	
 
 	//--search--
 
@@ -293,5 +359,14 @@ int main()
 	for (int i = 0; i <= 10; i++)
 		cout << setprecision(2) << xy.y[i] << "\t";
 	cout << endl;
+
+	cout << "\n--congruential generator:\n";
+	cout << " -random numbers: \n";
+	n1n2 n;
+	for (int i = 0; i < 5; i++)
+	{
+		n = polarGenerator();
+		cout << "   "<< n.n1 << " " << n.n2 << endl;
+	}
 
 }
