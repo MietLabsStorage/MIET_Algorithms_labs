@@ -1,11 +1,15 @@
 #include <iostream>
 #include <list>
-#include <vector>
 
-using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
+using std::list;
 
-const int E = 14;
-const int V = 8;
+//amount of edges
+const int E = 14; 
+//amount of nodes
+const int V = 8; 
 
 struct edge
 {
@@ -32,11 +36,11 @@ void sort(edge* g, int size)
 	}
 }
 
-
-//change node to groups
 void main()
 {
 	int y = E - V + 1;
+
+	//--Kruskal--
 	edge g[E] = 
 	{ 
 		{2,1,2},{1,2,3},{7,3,5},{2,5,8},
@@ -46,13 +50,7 @@ void main()
 	};
 	sort(g, E);
 
-	for (int i = 0; i < E; i++)
-	{
-		cout << g[i].v1 << "-" << g[i].v2 << ":: " << g[i].weight << endl;
-	}
-
-	list<edge> ostov;
-
+	list<edge> ostovByKruskal;
 	int node[V];
 	for (int i = 0; i < V; ++i)
 	{
@@ -64,7 +62,7 @@ void main()
 		int b = g[i].v2;
 		if (node[a-1] != node[b-1])
 		{
-			ostov.push_back({ 0,a,b });
+			ostovByKruskal.push_back({ 0,a,b });
 			int oldNode = node[b-1];
 			int newNode = node[a-1];
 			for (int j = 0; j < V; ++j)
@@ -75,21 +73,17 @@ void main()
 				}
 			}
 		}
-		cout << "node after " << i << ":: " << endl;
-		for (int i = 0; i < V; ++i)
-		{
-			cout << node[i] << " ";
-		}
-		cout << endl;
 	}
 
-	for (list<edge>::iterator i = ostov.begin(); i != ostov.end(); ++i)
+	cout << "edges for ostov by Kruskal:\n";
+	for (list<edge>::iterator i = ostovByKruskal.begin(); i != ostovByKruskal.end(); ++i)
 	{
 		cout << "[ " << (*i).v1 << "-" << (*i).v2 << " ]" << endl;
 	}
 
+	cout << endl;
 
-
+	//--Prim--
 	edge t[E] =
 	{
 		{2,1,2},{1,2,3},{7,3,5},{2,5,8},
@@ -110,14 +104,6 @@ void main()
 	{
 		adjMatrix[t[i].v1-1][t[i].v2-1] = t[i].weight;
 		adjMatrix[t[i].v2-1][t[i].v1-1] = t[i].weight;
-	}
-	for (int i = 0; i < V; i++)
-	{
-		for (int j = 0; j < V; j++)
-		{
-			cout << adjMatrix[i][j] << "\t";
-		}
-		cout << endl;
 	}
 
 	int currentNode = 1;
@@ -147,6 +133,7 @@ void main()
 			adjMatrix[j][minNode-1] = -1;
 		}
 	}
+	cout << "edges for ostov by Prim:\n";
 	for (list<edge>::iterator i = ostovByPrim.begin(); i != ostovByPrim.end(); ++i)
 	{
 		cout << "[ " << (*i).v1 << "-" << (*i).v2 << " ]" << endl;
