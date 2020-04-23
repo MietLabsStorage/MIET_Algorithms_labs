@@ -8,8 +8,11 @@ using std::endl;
 using std::list;
 using std::map;
 
-const int U = 12;
-const int V = 7;
+const int U1 = 12;
+const int V1 = 7;
+
+const int U2 = 12;
+const int V2 = 8;
 
 struct Arc
 {
@@ -25,8 +28,9 @@ struct Vertex
 
 void main()
 {
-	//graph
-	list<Arc> g =
+	//-----Dynamic-----
+
+	list<Arc> g1 =
 	{
 		{1,2,3},{2,6,6},{6,7,4},
 		{1,4,4},{4,5,9},{5,7,2},
@@ -34,14 +38,112 @@ void main()
 		{3,5,7},{3,7,8},{3,6,6}
 	};
 
-	//--Dejkstra--
+	//name - way
+	map<int, int> ways;
+	map<int, int> opened;
+	int adjacencyMatrix[V1][V1];
+	for (int i = 0; i < V1; i++)
+	{
+		ways[i + 1] = -1;
+		opened[i + 1] = 1;
+		for (int j = 0; j < V1; j++)
+		{
+			adjacencyMatrix[i][j] = -1;
+		}
+	}
+	for (list<Arc>::iterator i = g1.begin(); i != g1.end(); ++i)
+	{
+		adjacencyMatrix[(*i).v1 - 1][(*i).v2 - 1] = (*i).weigth;
+	}
+	ways[1] = 0;
+	opened.erase(1);
+
+	int minWay;
+	int minIndex;
+	while (!opened.empty())
+	{
+		for (int j = 1; j < V1; j++)
+		{
+			minWay = INT_MAX;
+			minIndex = -1;
+			for (int i = 0; i < V1; i++)
+			{
+				if (adjacencyMatrix[i][j] != -1)
+				{
+					if (ways[i + 1] == -1)
+					{
+						break;
+					}
+					else
+					{
+						if (ways[i + 1] + adjacencyMatrix[i][j] < minWay)
+						{
+							minWay = ways[i + 1] + adjacencyMatrix[i][j];
+							minIndex = i + 1;
+						}
+					}
+				}
+			}
+			if (minIndex != -1)
+			{
+				ways[j + 1] = minWay;
+				opened.erase(j + 1);
+			}
+		}
+		for (map<int, int>::iterator i = opened.begin(); i != opened.end(); ++i)
+		{
+			cout << (*i).first << " - " << (*i).second << " ";
+		}
+		cout << endl;
+	}
+
+	cout << "Vetex - way:\n";
+	for (map<int, int>::iterator i = ways.begin(); i != ways.end(); ++i)
+	{
+		cout << (*i).first << " - " << (*i).second << endl;
+	}
+
+	cout << "Ways:\n";
+	int _currentVertex;
+	for (map<int, int>::iterator i = ways.begin(); i != ways.end(); ++i)
+	{
+		_currentVertex = (*i).first;
+		cout << (*i).first;
+		while (_currentVertex != 1)
+		{
+			for (list<Arc>::iterator j = g1.begin(); j != g1.end(); ++j)
+			{
+				if ((*j).v2 == _currentVertex && ways[(*j).v1] + (*j).weigth == ways[(*j).v2])
+				{
+					cout << " <- " << (*j).v1;
+					_currentVertex = (*j).v1;
+					break;
+				}
+			}
+		}
+		cout << endl;
+	}
+
+
+
+
+	//-----Dejkstra-----
+
+	list<Arc> g2 =
+	{
+		{1,2,6},{2,3,12},{3,8,1},
+		{1,6,10},{6,7,7},{7,8,2},
+		{1,4,1},{2,4,1},{6,4,1},
+		{7,4,7},{4,5,4},{7,5,5},
+		{2,5,1},{3,5,1},{5,8,8}
+	};
 
 	//way is known;
 	list<Vertex> s;
 	//way is not known
 	//name - way
 	map<int, int> f;
-	for (list<Arc>::iterator i = g.begin(); i != g.end(); ++i)
+	for (list<Arc>::iterator i = g2.begin(); i != g2.end(); ++i)
 	{
 		f.insert({ (*i).v1, -1 });
 		f.insert({ (*i).v2, -1 });
@@ -51,17 +153,12 @@ void main()
 	s.push_back({ beginVertex,0 });
 	f.erase(beginVertex);
 
-	/*for (map<int, int>::iterator i = f.begin(); i != f.end(); ++i)
-	{
-		cout << (*i).first << " - " << (*i).second << endl;
-	}*/
-
 	Vertex minD;
 	while (!f.empty())
 	{
 		minD.name = (*f.begin()).first;
 		minD.way = (*f.begin()).second;
-		for (list<Arc>::iterator i = g.begin(); i != g.end(); ++i)
+		for (list<Arc>::iterator i = g2.begin(); i != g2.end(); ++i)
 		{
 			if ((*i).v1 == s.back().name)
 			{
@@ -83,75 +180,43 @@ void main()
 		f.erase(minD.name);
 	}
 
+	cout << "Vetex - way:\n";
 	for (list<Vertex>::iterator i = s.begin(); i != s.end(); ++i)
 	{
 		cout << (*i).name << " - " << (*i).way << endl;
 	}
 
-
-	//--Dinamic--
-
-	//nmae - way
-	map<int, int> ways;
-	map<int, int> opened;
-	int adjacencyMatrix[V][V];
-	for (int i = 0; i < V; i++)
+	/*cout << "Ways:\n";
+	Vertex currentVertex;
+	Vertex v1, v2;
+	for (list<Vertex>::iterator i = s.begin(); i != s.end(); ++i)
 	{
-		ways[i + 1] = -1;
-		opened[i + 1] = 1;
-		for (int j = 0; j < V; j++)
+		currentVertex = (*i);
+		cout << (*i).name;
+		while (currentVertex.name != s.front().name)
 		{
-			adjacencyMatrix[i][j] = -1;
-		}
-	}
-	for (list<Arc>::iterator i = g.begin(); i != g.end(); ++i)
-	{
-		adjacencyMatrix[(*i).v1-1][(*i).v2-1] = (*i).weigth;
-	}
-	ways[beginVertex] = 0;
-	opened.erase(beginVertex);
-
-	int minWay;
-	int minIndex;
-	while (!opened.empty())
-	{
-		for (int j = 1; j < V; j++)
-		{
-			minWay = INT_MAX;
-			minIndex = -1;
-			for (int i = 0; i < V; i++)
+			for (list<Arc>::iterator j = g2.begin(); j != g2.end(); ++j)
 			{
-				if (adjacencyMatrix[i][j] != -1)
+				
+				for (list<Vertex>::iterator k = s.begin(); k != s.end(); ++k)
 				{
-					if (ways[i+1] == -1)
+					if ((*j).v1 == (*k).name)
 					{
-						break;
+						v1 = (*k);
 					}
-					else
+					if ((*j).v2 == (*k).name)
 					{
-						if (ways[i+1] + adjacencyMatrix[i][j] < minWay)
-						{
-							minWay = ways[i+1] + adjacencyMatrix[i][j];
-							minIndex = i+1;
-						}
+						v2 = (*k);
 					}
 				}
+				if ((*j).v2 == currentVertex.name && v1.way + (*j).weigth == v2.way)
+				{
+					cout << " <- " << v1.name;
+					currentVertex = v1;
+					break;
+				}
 			}
-			if (minIndex != -1)
-			{
-				ways[j+1] = minWay;
-				opened.erase(j+1);
-			}
-		}
-		for (map<int, int>::iterator i = opened.begin(); i != opened.end(); ++i)
-		{
-			cout << (*i).first << " - " << (*i).second << " ";
 		}
 		cout << endl;
-	}
-
-	for (map<int, int>::iterator i = ways.begin(); i != ways.end(); ++i)
-	{
-		cout << (*i).first << " - " << (*i).second << endl;
-	}
+	}*/
 }
