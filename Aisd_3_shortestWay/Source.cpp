@@ -139,7 +139,7 @@ void main()
 	};
 
 	//way is known;
-	list<Vertex> s;
+	map<int, int> s;
 	//way is not known
 	//name - way
 	map<int, int> f;
@@ -147,10 +147,12 @@ void main()
 	{
 		f.insert({ (*i).v1, -1 });
 		f.insert({ (*i).v2, -1 });
+		s.insert({ (*i).v1, -1 });
+		s.insert({ (*i).v2, -1 });
 	}
 	
 	int beginVertex = 1;
-	s.push_back({ beginVertex,0 });
+	s[beginVertex] = 0;
 	f.erase(beginVertex);
 
 	Vertex minD;
@@ -160,11 +162,18 @@ void main()
 		minD.way = (*f.begin()).second;
 		for (list<Arc>::iterator i = g2.begin(); i != g2.end(); ++i)
 		{
-			if ((*i).v1 == s.back().name)
+			if (s[(*i).v1] != -1 && s[(*i).v2] == -1)
 			{
-				if ((*i).weigth + s.back().way < f[(*i).v2] || f[(*i).v2] == -1)
+				if ((*i).weigth + s[(*i).v1] < f[(*i).v2] || f[(*i).v2] == -1)
 				{
-					f[(*i).v2] = (*i).weigth + s.back().way;
+					f[(*i).v2] = (*i).weigth + s[(*i).v1];
+				}
+			}
+			if (s[(*i).v2] != -1 && s[(*i).v1] == -1)
+			{
+				if ((*i).weigth + s[(*i).v2] < f[(*i).v1] || f[(*i).v1] == -1)
+				{
+					f[(*i).v1] = (*i).weigth + s[(*i).v2];
 				}
 			}
 		}
@@ -176,47 +185,55 @@ void main()
 				minD.way = (*i).second;
 			}
 		}
-		s.push_back({ minD.name,minD.way });
+		s[minD.name] = minD.way;
 		f.erase(minD.name);
 	}
 
 	cout << "Vetex - way:\n";
-	for (list<Vertex>::iterator i = s.begin(); i != s.end(); ++i)
+	for (map<int, int>::iterator i = s.begin(); i != s.end(); ++i)
 	{
-		cout << (*i).name << " - " << (*i).way << endl;
+		cout << (*i).first << " - " << (*i).second << endl;
 	}
 
-	/*cout << "Ways:\n";
-	Vertex currentVertex;
+	cout << "Ways:\n";
+	int currentVertex;
 	Vertex v1, v2;
-	for (list<Vertex>::iterator i = s.begin(); i != s.end(); ++i)
+	for (map<int,int>::iterator i = s.begin(); i != s.end(); ++i)
 	{
-		currentVertex = (*i);
-		cout << (*i).name;
-		while (currentVertex.name != s.front().name)
+		currentVertex = (*i).first;
+		cout << (*i).first;
+		while (currentVertex != 1)
 		{
 			for (list<Arc>::iterator j = g2.begin(); j != g2.end(); ++j)
 			{
 				
-				for (list<Vertex>::iterator k = s.begin(); k != s.end(); ++k)
+				for (map<int, int>::iterator k = s.begin(); k != s.end(); ++k)
 				{
-					if ((*j).v1 == (*k).name)
+					if ((*j).v1 == (*k).first)
 					{
-						v1 = (*k);
+						v1.name = (*k).first;
+						v1.way = (*k).second;
 					}
-					if ((*j).v2 == (*k).name)
+					if ((*j).v2 == (*k).first)
 					{
-						v2 = (*k);
+						v2.name = (*k).first;
+						v2.way = (*k).second;
 					}
 				}
-				if ((*j).v2 == currentVertex.name && v1.way + (*j).weigth == v2.way)
+				if ((*j).v2 == currentVertex && v1.way + (*j).weigth == v2.way)
 				{
 					cout << " <- " << v1.name;
-					currentVertex = v1;
+					currentVertex = v1.name;
+					break;
+				}
+				if ((*j).v1 == currentVertex && v2.way + (*j).weigth == v1.way)
+				{
+					cout << " <- " << v2.name;
+					currentVertex = v2.name;
 					break;
 				}
 			}
 		}
 		cout << endl;
-	}*/
+	}
 }
