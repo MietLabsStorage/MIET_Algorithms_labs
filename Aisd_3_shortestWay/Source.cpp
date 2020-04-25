@@ -29,7 +29,7 @@ struct Vertex
 void main()
 {
 	//-----Dynamic-----
-
+	cout << "-----Dynamic-----" << endl;
 	list<Arc> g1 =
 	{
 		{1,2,3},{2,6,6},{6,7,4},
@@ -37,6 +37,12 @@ void main()
 		{2,3,4},{1,3,8},{4,3,10},
 		{3,5,7},{3,7,8},{3,6,6}
 	};
+
+	cout << "Graph::\nv1\tv2\tweight\n";
+	for (list<Arc>::iterator i = g1.begin(); i != g1.end(); ++i)
+	{
+		cout << (*i).v1 << "\t" << (*i).v2 << "\t" << (*i).weigth << endl;
+	}
 
 	//name - way
 	map<int, int> ways;
@@ -58,6 +64,7 @@ void main()
 	ways[1] = 0;
 	opened.erase(1);
 
+	//algorithm
 	int minWay;
 	int minIndex;
 	while (!opened.empty())
@@ -96,6 +103,7 @@ void main()
 		}
 		cout << endl;
 	}
+	//end algorithm
 
 	cout << "Vetex - way:\n";
 	for (map<int, int>::iterator i = ways.begin(); i != ways.end(); ++i)
@@ -123,12 +131,12 @@ void main()
 		}
 		cout << endl;
 	}
-
+	cout << endl << endl;
 
 
 
 	//-----Dejkstra-----
-
+	cout << "-----Dejkstra-----" << endl;
 	list<Arc> g2 =
 	{
 		{1,2,6},{2,3,12},{3,8,1},
@@ -138,10 +146,18 @@ void main()
 		{2,5,1},{3,5,1},{5,8,8}
 	};
 
+	cout << "Graph::\nv1\tv2\tweight\n";
+	for (list<Arc>::iterator i = g2.begin(); i != g2.end(); ++i)
+	{
+		cout << (*i).v1 << "\t" << (*i).v2 << "\t" << (*i).weigth << endl;
+	}
+
+
+	//name - way
+
 	//way is known;
 	map<int, int> s;
 	//way is not known
-	//name - way
 	map<int, int> f;
 	for (list<Arc>::iterator i = g2.begin(); i != g2.end(); ++i)
 	{
@@ -155,6 +171,7 @@ void main()
 	s[beginVertex] = 0;
 	f.erase(beginVertex);
 
+	//algorithm
 	Vertex minD;
 	while (!f.empty())
 	{
@@ -188,6 +205,7 @@ void main()
 		s[minD.name] = minD.way;
 		f.erase(minD.name);
 	}
+	//end alrorithm
 
 	cout << "Vetex - way:\n";
 	for (map<int, int>::iterator i = s.begin(); i != s.end(); ++i)
