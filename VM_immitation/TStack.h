@@ -10,8 +10,8 @@ protected:
 
 public:
 	TStack(int _memSize);
-	void put(T sym, int& err);
-	T get(int& err);
+	virtual void put(T sym, int& err);
+	virtual T get(int& err);
 	bool isEmpty();
 	bool isFull();
 };

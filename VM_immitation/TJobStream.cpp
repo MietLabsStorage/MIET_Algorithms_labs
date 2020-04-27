@@ -8,5 +8,9 @@ TJobStream::TJobStream(int intens)
 
 int TJobStream::getNewJob()
 {
-	return rand() % 1000000;
+	if (rand() % RAND_MAX < jobIntens)
+	{
+		return 1;
+	}
+	return 0;
 }
