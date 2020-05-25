@@ -1,15 +1,19 @@
+//#ifndef TQUEUE_H
+//#define TQUEUE_H
+
 #pragma once
 #include "TStack.h"
 
-template <class T>
-class TQueue :	public TStack<T>
+class TQueue : public TStack
 {
 	int Li;
 	int GetNextIndex(int index);
 
 public:
-	TQueue(int size = this->maxMemSize);
+	TQueue();
+	TQueue(int size);
 	T get();
 	void put(T sym);
 };
 
+//#endif 

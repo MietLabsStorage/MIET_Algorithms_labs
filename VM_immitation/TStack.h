@@ -1,5 +1,8 @@
+//#ifndef TSTACK_H
+//#define TSTACK_H
 #pragma once
-template <class T>
+
+typedef int T;
 class TStack
 {
 protected:
@@ -9,10 +12,15 @@ protected:
 	int dataCount;
 
 public:
+	TStack();
 	TStack(int _memSize);
 	virtual void put(T sym, int& err);
 	virtual T get(int& err);
 	bool isEmpty();
 	bool isFull();
+	int count();
+	void setSize(int size);
 };
 
+
+//#endif 

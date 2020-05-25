@@ -3,12 +3,13 @@
 
 TProc::TProc(int rate)
 {
-	procRate = 1 / rate;
+	procRate = (double) 1 / rate;
 }
 
 int TProc::IsProcBusy()
 {
-	if (rand() % RAND_MAX >= procRate)
+	//srand(time(0));
+	if ((double) rand() / RAND_MAX >= procRate)
 	{
 		return 1;
 	}

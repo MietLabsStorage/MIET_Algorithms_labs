@@ -1,19 +1,21 @@
 #include "TQueue.h"
 
-template <class T>
-TQueue<T>::TQueue(int size) : TStack(size) 
-{ 
+TQueue::TQueue() : TStack()
+{
 	Li = 0;
 }
 
-template <class T>
-int TQueue<T>::GetNextIndex(int index)
+TQueue::TQueue(int size) : TStack(size)
 {
-	return ++index % this->memSize();
+	Li = 0;
 }
 
-template <class T>
-T TQueue<T>::get()
+int TQueue::GetNextIndex(int index)
+{
+	return ++index % this->memSize;
+}
+
+T TQueue::get()
 {
 	/*if (!this->isEmpty())
 	{
@@ -28,8 +30,7 @@ T TQueue<T>::get()
 	return tmp;
 }
 
-template <class T>
-void TQueue<T>::put(T sym)
+void TQueue::put(T sym)
 {
 	/*if (!this->isFull())
 	{

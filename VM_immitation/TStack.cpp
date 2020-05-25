@@ -1,20 +1,29 @@
 #include "TStack.h"
 #include <iostream>
 
-template <class T>
-TStack<T>::TStack(int _memSize)
+TStack::TStack()
 {
-	memSize = _memSize;
+	memSize = maxMemSize;
 	dataCount = 0;
-	cell = new char[_memSize];
+	cell = new T[maxMemSize];
 	for (int i = 0; i < memSize; i++)
 	{
 		cell[i] = ' ';
 	}
 }
 
-template <class T>
-void TStack<T>::put(T sym, int& err)
+TStack::TStack(int _memSize)
+{
+	memSize = _memSize;
+	dataCount = 0;
+	cell = new T[_memSize];
+	for (int i = 0; i < memSize; i++)
+	{
+		cell[i] = ' ';
+	}
+}
+
+void TStack::put(T sym, int& err)
 {
 	if (dataCount < memSize)
 	{
@@ -28,8 +37,7 @@ void TStack<T>::put(T sym, int& err)
 	}
 }
 
-template <class T>
-T TStack<T>::get(int& err)
+T TStack::get(int& err)
 {
 	if (dataCount != 0)
 	{
@@ -47,8 +55,7 @@ T TStack<T>::get(int& err)
 	}
 }
 
-template <class T>
-bool TStack<T>::isEmpty()
+bool TStack::isEmpty()
 {
 	if (dataCount == 0)
 	{
@@ -60,8 +67,7 @@ bool TStack<T>::isEmpty()
 	}
 }
 
-template <class T>
-bool TStack<T>::isFull()
+bool TStack::isFull()
 {
 	if (dataCount == memSize)
 	{
@@ -71,4 +77,16 @@ bool TStack<T>::isFull()
 	{
 		return false;
 	}
+}
+
+int TStack::count()
+{
+	return dataCount;
+}
+
+void TStack::setSize(int size)
+{
+	memSize = size;
+	delete[] cell;
+	cell = new T[maxMemSize];
 }
