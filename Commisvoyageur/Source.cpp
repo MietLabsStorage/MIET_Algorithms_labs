@@ -249,10 +249,6 @@ void matrixResize(int di, int dj, Node& currentNode)
 		}
 	}
 	currentNode.matrix.trueI.erase(k);
-	for (int i = 0; i < currentNode.matrix.size - 1; i++)
-	{
-		cout << "+++" << currentNode.matrix.trueI[i] << endl;
-	}
 	for (vector<int>::iterator j = currentNode.matrix.trueJ.begin(); j != currentNode.matrix.trueJ.end(); ++j)
 	{
 		if ((*j) == dj)
@@ -262,21 +258,12 @@ void matrixResize(int di, int dj, Node& currentNode)
 		}
 	}
 	currentNode.matrix.trueJ.erase(k);
-	for (int i = 0; i < currentNode.matrix.size - 1; i++)
-	{
-		cout << "+++" << currentNode.matrix.trueJ[i] << endl;
-	}
 	currentNode.matrix.size--;
 	currentNode.matrix.elem[dj][di] = inf;
 }
 
 void newNodes(list<Node>& nodes)
 {
-	for (list<Node>::iterator i = nodes.begin(); i != nodes.end(); ++i)
-	{
-		cout << endl << "***" << (*i).a << (*i).b << endl;
-	}
-
 	Node currentNode = currNode(nodes);
 
 	//work with left node
@@ -300,35 +287,17 @@ void newNodes(list<Node>& nodes)
 	{
 		H += hi[k];
 		H += hj[k];
-		cout << "H" << hi[k] << "H" << hj[k];
 	}
-	cout << "HHH" << H << endl;
 	tempWay.clear();
 	tempWay = currentNode.way;
 	tempWay.push_back(D.i);
 	tempWay.push_back(D.j);
 	tempNode = Node(D.i, D.j, currentNode.weight + H, tempWay, currentNode.matrix);
 	nodes.push_back(tempNode);
-
-	cout << "After:" << endl;
-	for (list<Node>::iterator i = nodes.begin(); i != nodes.end(); ++i)
-	{
-		cout << (*i).weight << " ";
-	}
-	cout << endl;
 }
 
 int main()
 {
-	/*Matrix matrix = Matrix(5, 5);
-	int tempMatrix[5][5] =
-	{
-		{inf, 7, 12, 25, 10},
-		{10, inf, 9, 5, 11},
-		{13, 8, inf, 6, 4},
-		{6, 11, 15, inf, 15},
-		{5, 9, 12, 17 ,inf}
-	};*/
 	Matrix matrix;
 	int size = 6;
 	matrix.size = size;
@@ -359,10 +328,9 @@ int main()
 			matrix.elem[matrix.trueI[i]][matrix.trueJ[j]] = tempMatrix[i][j];
 		}
 	}
-
-	int R = firstElem(matrix);
 	showMatrix(matrix); cout << endl;
-
+	int R = firstElem(matrix);
+	
 	list<int> tempList;
 	tempList.push_back(-8);
 	list<Node> nodes;
@@ -372,17 +340,20 @@ int main()
 	while (currNode(nodes, 1).matrix.size != 2)
 	{
 		newNodes(nodes);
-		showMatrix(currNode(nodes, 1).matrix);
-		cout << "SIZZ" << currNode(nodes, 1).matrix.size;
-		cout << endl;
 	}
 
 	Node finNode = currNode(nodes, 1);
+	int finWay = -7;
+	cout << "Way:: ";
 	for (list<int>::iterator i = finNode.way.begin(); i != finNode.way.end(); ++i)
 	{
-		cout << (*i)+1 << " ";
+		if (finWay != *i + 1)
+		{
+			finWay = *i + 1;
+			cout << finWay << " ";
+		}
 	}
-
+	cout << endl << "Weight:: " << finNode.weight;
 
 	return 0;
 }
