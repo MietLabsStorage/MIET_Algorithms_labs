@@ -1,5 +1,3 @@
-//#ifndef TSTACK_H
-//#define TSTACK_H
 #pragma once
 
 typedef int T;
@@ -21,6 +19,3 @@ public:
 	int count();
 	void setSize(int size);
 };
-
-
-//#endif 

@@ -8,7 +8,6 @@ TProc::TProc(int rate)
 
 int TProc::IsProcBusy()
 {
-	//srand(time(0));
 	if ((double) rand() / RAND_MAX >= procRate)
 	{
 		return 1;
@@ -18,5 +17,6 @@ int TProc::IsProcBusy()
 
 int TProc::RunNewJob(int jobId)
 {
+	this->jobId = jobId;
 	return jobId;
 }

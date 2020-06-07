@@ -17,13 +17,6 @@ int TQueue::GetNextIndex(int index)
 
 T TQueue::get()
 {
-	/*if (!this->isEmpty())
-	{
-		T tmp = this->cell[Li];
-		Li = GetNextIndex(Li);
-		this->dataCount--;
-		return tmp;
-	}*/
 	T tmp = this->cell[Li];
 	Li = GetNextIndex(Li);
 	this->dataCount--;
@@ -32,11 +25,6 @@ T TQueue::get()
 
 void TQueue::put(T sym)
 {
-	/*if (!this->isFull())
-	{
-		this->dataCount++;
-		this->cell[(Li + this->dataCount - 1) % this->memSize] = sym;
-	}*/
 	this->dataCount++;
 	this->cell[(Li + this->dataCount - 1) % this->memSize] = sym;
 }

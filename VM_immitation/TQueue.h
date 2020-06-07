@@ -1,6 +1,3 @@
-//#ifndef TQUEUE_H
-//#define TQUEUE_H
-
 #pragma once
 #include "TStack.h"
 
@@ -15,5 +12,3 @@ public:
 	T get();
 	void put(T sym);
 };
-
-//#endif 
