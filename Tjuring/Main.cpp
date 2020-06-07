@@ -6,9 +6,12 @@ using namespace std;
 int main()
 {
 	TuringMachine TM = TuringMachine('5');
+	cout << "tape before:: ";
 	TM.show(); cout << endl;
 	TM.run();
-	TM.show();
-
+	cout << "tape after::  ";
+	TM.show(); cout << endl;
+	cout << endl << "Functional table:: " << endl;
+	TM.showTable();
 	return 0;
 }

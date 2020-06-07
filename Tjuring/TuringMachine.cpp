@@ -2,7 +2,7 @@
 
 int convert(char c)
 {
-	if (c == 'k')
+	if (c == 'k' || c == 'a')
 	{
 		return 10;
 	}
@@ -19,7 +19,6 @@ void TuringMachine::run()
 	curZ = Z[convert(Q)][BG];
 	while (true)
 	{
-		//cout << curZ.status << curZ.value << curZ.move << endl;
 		if (curZ.value != '-')
 		{
 			B[G] = curZ.value;
@@ -45,10 +44,6 @@ void TuringMachine::run()
 		{
 			BG = 11;
 		}
-		/*else
-		{
-			BG = convert(B[G]);
-		}*/
 		curZ = Z[convert(Q)][BG];
 		if (curZ.status == '-' && curZ.value == '-' && curZ.move == '-' || curZ.status == 'k' && curZ.value == '1' && curZ.move == 'H')
 		{
@@ -62,5 +57,33 @@ void TuringMachine::show()
 	for (int i = 0; i < 15; i++)
 	{
 		cout << B[i] << " ";
+	}
+}
+
+void TuringMachine::showTable()
+{
+	for (vector<vector<logical>>::iterator i = Z.begin(); i != Z.end(); ++i)
+	{
+		for (vector<logical>::iterator j = (*i).begin(); j != (*i).end(); ++j)
+		{
+			if ((*j).status != '-')
+			{
+				cout << (*j).status;
+			}
+			if ((*j).value != '-')
+			{
+				cout << (*j).value;
+			}
+			if ((*j).move != '-')
+			{
+				cout << (*j).move;
+			}
+			if ((*j).status == '-' && (*j).value == '-' && (*j).move == '-')
+			{
+				cout << '-';
+			}
+			cout << '\t';
+		}
+		cout << endl;
 	}
 }
