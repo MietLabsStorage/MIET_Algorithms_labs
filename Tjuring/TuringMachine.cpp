@@ -34,7 +34,7 @@ void TuringMachine::run()
 		if (curZ.move == 'L')
 		{
 			BG = convert(B[G-1]);
-			G++;
+			G--;
 		}
 		if (B[G] == 'r')
 		{
@@ -44,11 +44,11 @@ void TuringMachine::run()
 		{
 			BG = 11;
 		}
-		curZ = Z[convert(Q)][BG];
 		if (curZ.status == '-' && curZ.value == '-' && curZ.move == '-' || curZ.status == 'k' && curZ.value == '1' && curZ.move == 'H')
 		{
 			break;
 		}
+		curZ = Z[convert(Q)][BG];
 	}
 }
 
